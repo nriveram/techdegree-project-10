@@ -16,7 +16,7 @@ const UserSignIn = () => {
     // Event Handlers
     const handleSubmit = async (event) => {
         event.preventDefault();
-        let from = '/authenticated';
+        let from = '/';
         if (location.state) {
             from = location.state.from;
         }
