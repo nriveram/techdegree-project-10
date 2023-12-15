@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import { api } from "../utils/apiHelper";
+import UserContext from "../context/UserContext";
 import Markdown from 'react-markdown'
 
 const CourseDetail = () => {
     const { id } = useParams();
+    const { authUser } = useContext(UserContext);
     const [course, setCourse] = useState();
 
     useEffect(() => {
@@ -19,24 +21,24 @@ const CourseDetail = () => {
                 throw new Error();
             }
         };
-        fetchData(); 
+        fetchData();
     }, [id]);
-
-    // useEffect(() => {
-    //     api('/courses/' + id, 'GET', null)
-    //     .then(res => res.json())
-    //     .then(res => setCourse(res)); 
-    // }, id);
-
-    //console.log(course.student);
 
     return (
         <main>
             <div className="actions--bar">
                 <div className="wrap">
-                    <Link className="button" to="./update">Update Course </Link>
-                    <a className="button" href="#">Delete Course</a>
-                    <Link className="button button-secondary" to="/">Return to List </Link>
+                    {
+                        (authUser && (course?.userId === authUser.id))
+                            ?
+                            <>
+                                <Link className="button" to="./update">Update Course </Link>
+                                <a className="button" href="#">Delete Course</a>
+                                <Link className="button button-secondary" to="/">Return to List </Link>
+                            </>
+                            :
+                            <Link className="button button-secondary" to="/">Return to List </Link>
+                    }
                 </div>
             </div>
             <div className="wrap">

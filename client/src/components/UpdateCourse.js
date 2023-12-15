@@ -1,10 +1,13 @@
-import { useState, useEffect, useRef} from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef, useContext} from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { api } from "../utils/apiHelper";
+import UserContext from "../context/UserContext"; 
+import ErrorsDisplay from "./ErrorsDisplay";
 
 const UpdateCourse = () => {
     const { id } = useParams();
     const [course, setCourse] = useState();
+    const { authUser } = useContext(UserContext);
     const [errors, setErrors] = useState([]);
     const navigate = useNavigate();
 
@@ -38,29 +41,40 @@ const UpdateCourse = () => {
             title: title.current.value, 
             description: description.current.value,
             estimatedTime: estimatedTime.current.value,
-            materialsNeeded: materialsNeeded.current.value
+            materialsNeeded: materialsNeeded.current.value,
+            userId: authUser.id
         }
 
         try {
-            const response = await api("/courses/:id", "PUT", courseUpdate);
+            const response = await api("/courses/" + id, "PUT", courseUpdate, authUser);
             if (response.status === 204) {
                 console.log("Course was successfully updated");
-                navigate("/"); 
+                navigate("/courses/" + id); 
             } else if (response.status === 403) {
                 const data = await response.json();
                 setErrors(data.errors);
             } else {
                 throw new Error();
+                
             }
         } catch(error) {
             console.log(error);
+            // navigate to error route
         }
     }
+
+    const handleCancel = (event) => {
+        event.preventDefault();
+        navigate('/');
+    }
+
+    //console.log(authUser);
 
     return (
         <main>
             <div className="wrap">
                 <h2>Update Course</h2>
+                <ErrorsDisplay errors={errors} />
                 <form onSubmit={handleUpdate}>
                     <div className="main--flex">
                         <div>
@@ -95,7 +109,7 @@ const UpdateCourse = () => {
                                 defaultValue={course?.materialsNeeded} />
                         </div>
                     </div>
-                    <button className="button" type="submit">Update Course</button><button className="button button-secondary" onclick="event.preventDefault(); location.href='/';">Cancel</button>
+                    <button className="button" type="submit">Update Course</button><button className="button button-secondary" onClick={handleCancel}>Cancel</button>
                 </form>
             </div>
         </main>

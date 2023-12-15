@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../utils/apiHelper';
 
 import UserContext from '../context/UserContext';
+import ErrorsDisplay from './ErrorsDisplay';
 
 const UserSignUp = () => {
     const { actions } = useContext(UserContext);
@@ -55,6 +56,7 @@ const UserSignUp = () => {
         <main>
             <div className="form--centered">
                 <h2>Sign Up</h2>
+                <ErrorsDisplay errors={errors} />
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="firstName">First Name</label>
                     <input
