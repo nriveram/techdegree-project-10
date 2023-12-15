@@ -1,6 +1,7 @@
 import { useContext, useRef, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import UserContext from '../context/UserContext';
+import ErrorsDisplay from './ErrorsDisplay';
 
 const UserSignIn = () => {
     const { actions } = useContext(UserContext);
@@ -36,8 +37,7 @@ const UserSignIn = () => {
             }
         } catch (error) {
             console.log(error);
-            // EDIT THIS
-            //navigate('/error');
+            navigate('/error');
         }
     }
 
@@ -51,6 +51,7 @@ const UserSignIn = () => {
         <main>
             <div className="form--centered">
                 <h2>Sign In</h2>
+                <ErrorsDisplay errors={errors} />
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="emailAddress">Email Address</label>
                     <input

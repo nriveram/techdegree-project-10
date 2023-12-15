@@ -42,8 +42,7 @@ const UserSignUp = () => {
             }
         } catch (error) {
             console.log(error);
-            // EDIT THIS
-            //navigate('/error');
+            navigate('/error');
         }
 
     }

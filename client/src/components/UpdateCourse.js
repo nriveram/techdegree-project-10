@@ -55,13 +55,15 @@ const UpdateCourse = () => {
             } else if (response.status === 400) {
                 const data = await response.json();
                 setErrors(data.errors);
+            } else if (response.status === 403) {
+                navigate('/forbidden');
             } else {
-                throw new Error();
-                
+                //throw new Error();
+                navigate('/notfound'); 
             }
         } catch(error) {
             console.log(error);
-            // navigate to error route
+            navigate('/error');
         }
     }
 

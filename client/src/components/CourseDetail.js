@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { api } from "../utils/apiHelper";
 import UserContext from "../context/UserContext";
 import Markdown from 'react-markdown'
@@ -8,6 +8,7 @@ const CourseDetail = () => {
     const { id } = useParams();
     const { authUser } = useContext(UserContext);
     const [course, setCourse] = useState();
+    const navigate = useNavigate();
 
     useEffect(() => {
         // fetches course information using their id 
@@ -16,14 +17,17 @@ const CourseDetail = () => {
             if (response.status === 200) {
                 const courseDetail = await response.json();
                 setCourse(courseDetail);
-            } else if (response.status === 401) {
+            // 401?
+            } else if (response.status === 404) {
+                navigate('/notfound');
                 return null;
             } else {
                 throw new Error();
+                 
             }
         };
         fetchData();
-    }, [id]);
+    }, [id, navigate]);
 
     return (
         <main>

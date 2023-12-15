@@ -41,7 +41,7 @@ const CreateCourse = () => {
             }
         } catch (error) {
             console.log(error);
-            // navigate to error route
+            navigate('/error');
         }
     }
     // handles event listener for cancel button 
