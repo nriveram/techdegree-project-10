@@ -13,13 +13,13 @@ const Header = () => {
                     <ul className="header--signedout">
                     {authUser === null ?
                         <>
-                            <Link to="/signup">Sign up</Link>
-                            <Link to="/signin">Sign in</Link>
+                            <li><Link to="/signup">Sign up</Link></li>
+                            <li><Link to="/signin">Sign in</Link></li>
                         </>
                         :
                         <>
-                            <span>Welcome, {authUser.firstName} {authUser.lastName}!</span>
-                            <Link className="signout" to="/signout">Sign out</Link>
+                            <li><span>Welcome, {authUser.firstName} {authUser.lastName}!</span></li>
+                            <li><Link className="signout" to="/signout">Sign out</Link></li>
                         </>
                     }
                     </ul>

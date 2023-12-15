@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 //import './App.css';
-import './styles/global.css';
 import './styles/reset.css';
+import './styles/global.css';
 
 //import DataFetching from './components/DataFetching';
 import Header from './components/Header';

@@ -6,20 +6,21 @@ import Markdown from 'react-markdown'
 const CourseDetail = () => {
     const { id } = useParams();
     const [course, setCourse] = useState();
-    const [isLoaded, setIsLoaded] = useState(false);
 
-    useEffect(async () => {
-        const response = await api("/courses/" + id, "GET", ""); 
-        console.log(response); 
-        if (response.status === 200) {
-            const courseDetail = await response.json();
-            setCourse(courseDetail); 
-        } else if (response.status === 401) {
-            return null; 
-        } else {
-            throw new Error(); 
-        }
-    }, id);
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await api("/courses/" + id, "GET", "");
+            if (response.status === 200) {
+                const courseDetail = await response.json();
+                setCourse(courseDetail);
+            } else if (response.status === 401) {
+                return null;
+            } else {
+                throw new Error();
+            }
+        };
+        fetchData(); 
+    }, [id]);
 
     // useEffect(() => {
     //     api('/courses/' + id, 'GET', null)
@@ -33,7 +34,7 @@ const CourseDetail = () => {
         <main>
             <div className="actions--bar">
                 <div className="wrap">
-                    <Link className="button" to="./courses/:id/update">Update Course </Link>
+                    <Link className="button" to="./update">Update Course </Link>
                     <a className="button" href="#">Delete Course</a>
                     <Link className="button button-secondary" to="/">Return to List </Link>
                 </div>
@@ -44,16 +45,16 @@ const CourseDetail = () => {
                     <div className="main--flex">
                         <div>
                             <h3 className="course--detail--title">Course</h3>
-                            <h4 className="course--name">{"course.title"}</h4>
-                            <p>EDIT THIS</p>
-                            <Markdown>{"course.description"}</Markdown>
+                            <h4 className="course--name">{course?.title}</h4>
+                            <p>{course?.student.firstName} {course?.student.lastName}</p>
+                            <Markdown>{course?.description}</Markdown>
                         </div>
                         <div>
                             <h3 className="course--detail--title">Estimated Time</h3>
-                            <p>{"course.estimatedTime"}</p>
+                            <p>{course?.estimatedTime}</p>
                             <h3 className="course--detail--title">Materials Needed</h3>
                             <ul className="course--detail--list">
-                                <Markdown>{"course.materialsNeeded"}</Markdown>
+                                <Markdown>{course?.materialsNeeded}</Markdown>
                             </ul>
                         </div>
                     </div>
