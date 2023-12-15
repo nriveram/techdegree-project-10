@@ -47,7 +47,7 @@ router.get('/courses', asyncHandler(async (req, res) => {
 }));
 
 // Route that returns the corresponding course and User associated 
-router.get('/courses/:id', asyncHandler(async (req, res) => {
+router.get('/courses/:id', asyncHandler(async (req, res, next) => {
     const course = await Course.findOne({ 
         attributes: { exclude: ['createdAt', 'updatedAt']},
         where: 
@@ -62,7 +62,13 @@ router.get('/courses/:id', asyncHandler(async (req, res) => {
             }
         ] 
     });
-    res.status(200).json(course);
+    if (course) {
+        res.status(200).json(course);
+    } else {
+        const err = new Error(); 
+        err.status = 404; 
+        next(err); 
+    }
 }));
 
 // Route that creates a new course 

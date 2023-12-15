@@ -17,17 +17,39 @@ const CourseDetail = () => {
             if (response.status === 200) {
                 const courseDetail = await response.json();
                 setCourse(courseDetail);
-            // 401?
+                // 401?
             } else if (response.status === 404) {
                 navigate('/notfound');
-                return null;
+                //return null;
             } else {
                 throw new Error();
-                 
+
             }
         };
         fetchData();
     }, [id, navigate]);
+
+    const handleDelete = async (event) => {
+        event.preventDefault();
+        
+        // sends a put request to the api to delete course
+        try {
+            const response = await api("/courses/" + id, "DELETE", course, authUser);
+            if (response.status === 204) {
+                console.log("Course was successfully deleted");
+                navigate("/");
+            } else if (response.status === 403) {
+                navigate('/forbidden');
+            } else if (response.status === 404) {
+                navigate('/notfound');
+            }else {
+                throw new Error();
+            }
+        } catch (error) {
+            console.log(error);
+            navigate('/error');
+        }
+    };
 
     return (
         <main>
@@ -38,7 +60,7 @@ const CourseDetail = () => {
                             ?
                             <>
                                 <Link className="button" to="./update">Update Course </Link>
-                                <a className="button" href="#">Delete Course</a>
+                                <Link className="button" to="/" onClick={handleDelete}>Delete Course </Link>
                                 <Link className="button button-secondary" to="/">Return to List </Link>
                             </>
                             :

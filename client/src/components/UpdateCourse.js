@@ -24,14 +24,19 @@ const UpdateCourse = () => {
             if (response.status === 200) {
                 const courseDetail = await response.json();
                 setCourse(courseDetail);
-            } else if (response.status === 401) {
-                return null;
+            } else if (response.status === 403) {
+                navigate('/forbidden');
+            // 401?
+            } else if (response.status === 404) {
+                navigate('/notfound');
+                //return null;
             } else {
+                //navigate('/error');
                 throw new Error();
             }
         };
         fetchData(); 
-    }, [id]);
+    }, [id, navigate]);
 
     // event handlers 
     const handleUpdate = async (event) => {
@@ -55,11 +60,8 @@ const UpdateCourse = () => {
             } else if (response.status === 400) {
                 const data = await response.json();
                 setErrors(data.errors);
-            } else if (response.status === 403) {
-                navigate('/forbidden');
-            } else {
-                //throw new Error();
-                navigate('/notfound'); 
+            }  else {
+                throw new Error(); 
             }
         } catch(error) {
             console.log(error);

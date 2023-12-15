@@ -29,7 +29,7 @@ function App() {
         <Route path="/signup" element={<UserSignUp />} />
         <Route path="/signout" element={<UserSignOut />} />
         <Route element={<PrivateRoute />}>
-          <Route path="/create" element={<CreateCourse />} />
+          <Route path="/courses/create" element={<CreateCourse />} />
           <Route path="/courses/:id/update" element={<UpdateCourse />} />
         </Route>
         <Route path="/error" element={<UnhandledError />} />

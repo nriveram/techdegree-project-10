@@ -3,7 +3,7 @@ const { Model, DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 
 module.exports = (sequelize) => {
-    class User extends Model {}
+    class User extends Model { }
     User.init({
         firstName: {
             type: DataTypes.STRING,
@@ -16,7 +16,7 @@ module.exports = (sequelize) => {
                     msg: 'Please provide a first name.'
                 }
             }
-        }, 
+        },
         lastName: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -28,7 +28,7 @@ module.exports = (sequelize) => {
                     msg: 'Please provide a last name.'
                 }
             }
-        }, 
+        },
         emailAddress: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -42,11 +42,13 @@ module.exports = (sequelize) => {
             }
         },
         password: {
-            type: DataTypes.STRING,  
+            type: DataTypes.STRING,
             allowNull: false,
             set(val) {
-                const hashedPassword = bcrypt.hashSync(val, 10);
-                this.setDataValue('password', hashedPassword);
+                if (val) {
+                    const hashedPassword = bcrypt.hashSync(val, 10);
+                    this.setDataValue('password', hashedPassword);
+                }
             },
             validate: {
                 notNull: {
@@ -57,17 +59,17 @@ module.exports = (sequelize) => {
                 },
             }
         },
-    }, { sequelize }); 
+    }, { sequelize });
 
     User.associate = (models) => {
-        User.hasMany(models.Course, { 
-          as:  'student', // alias
-          foreignKey: {
-            fieldName: 'userId',
-            allowNull: false,
-          },
+        User.hasMany(models.Course, {
+            as: 'student', // alias
+            foreignKey: {
+                fieldName: 'userId',
+                allowNull: false,
+            },
         });
     };
 
-    return User; 
+    return User;
 }; 
