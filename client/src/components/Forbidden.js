@@ -9,4 +9,4 @@ const Forbidden = () => {
     );
   }
   
-  export default Forbidden;
+export default Forbidden;

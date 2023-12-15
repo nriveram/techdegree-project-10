@@ -15,9 +15,11 @@ const CreateCourse = () => {
     const estimatedTime = useRef(null);
     const materialsNeeded = useRef(null);
 
+    // event handler for creating a course 
     const handleCreate = async (event) => {
         event.preventDefault();
 
+        // creates a course json with information 
         const createCourse = {
             title: title.current.value,
             description: description.current.value,
@@ -25,13 +27,13 @@ const CreateCourse = () => {
             materialsNeeded: materialsNeeded.current.value,
             userId: authUser.id
         }
-
+        // sends a post request to the api with the course details 
         try {
             const response = await api("/courses", "POST", createCourse, authUser);
             if (response.status === 201) {
                 console.log("Course was successfully created");
                 navigate("/");
-            } else if (response.status === 403) {
+            } else if (response.status === 400) {
                 const data = await response.json();
                 setErrors(data.errors);
             } else {
@@ -42,7 +44,7 @@ const CreateCourse = () => {
             // navigate to error route
         }
     }
-
+    // handles event listener for cancel button 
     const handleCancel = (event) => {
         event.preventDefault();
         navigate('/');

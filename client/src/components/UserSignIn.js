@@ -20,12 +20,14 @@ const UserSignIn = () => {
         if (location.state) {
             from = location.state.from;
         }
+        // creates a credentials json 
         const credentials = {
             emailAddress: emailAddress.current.value,
             password: password.current.value
         };
 
         try {
+            // sends credentials to sign in function to check if user exists 
             const user = await actions.signIn(credentials);
             if (user) {
                 navigate(from);

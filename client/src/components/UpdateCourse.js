@@ -37,6 +37,7 @@ const UpdateCourse = () => {
     const handleUpdate = async (event) => {
         event.preventDefault();
 
+        // creates a new course json for the updated course
         const courseUpdate = {
             title: title.current.value, 
             description: description.current.value,
@@ -45,12 +46,13 @@ const UpdateCourse = () => {
             userId: authUser.id
         }
 
+        // sends a put request to the api to update course
         try {
             const response = await api("/courses/" + id, "PUT", courseUpdate, authUser);
             if (response.status === 204) {
                 console.log("Course was successfully updated");
                 navigate("/courses/" + id); 
-            } else if (response.status === 403) {
+            } else if (response.status === 400) {
                 const data = await response.json();
                 setErrors(data.errors);
             } else {
@@ -63,12 +65,11 @@ const UpdateCourse = () => {
         }
     }
 
+    // event listener function for cancel button 
     const handleCancel = (event) => {
         event.preventDefault();
         navigate('/');
     }
-
-    //console.log(authUser);
 
     return (
         <main>

@@ -5,10 +5,12 @@ import Cookies from "js-cookie";
 const UserContext = createContext(null);
 
 export const UserProvider = (props) => {
+  // creates a cookie to keep authenticated user 
   const cookie = Cookies.get("authenticatedUser"); 
   const [authUser, setAuthUser] = useState(cookie ? JSON.parse(cookie) : null);
 
   const signIn = async (credentials) => {
+    // sends a get request to api to get user 
     const response = await api("/users", "GET", null, credentials); 
     if (response.status === 200) {
       const user = await response.json();
@@ -22,7 +24,7 @@ export const UserProvider = (props) => {
       throw new Error();
     }
   }
-
+  // signs out user function 
   const signOut = () => {
     setAuthUser(null); 
     Cookies.remove("authenticatedUser"); 

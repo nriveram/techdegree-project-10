@@ -10,6 +10,7 @@ const CourseDetail = () => {
     const [course, setCourse] = useState();
 
     useEffect(() => {
+        // fetches course information using their id 
         const fetchData = async () => {
             const response = await api("/courses/" + id, "GET", "");
             if (response.status === 200) {

@@ -5,6 +5,7 @@ import UserContext from "../context/UserContext";
 const Header = () => {
     const { authUser } = useContext(UserContext);
 
+    // returns a header depending if user is signed in or not 
     return (
         <header>
             <div className="wrap header--flex">

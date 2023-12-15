@@ -20,13 +20,14 @@ const UserSignUp = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        // creates a json for new user 
         const user = {
             firstName: firstName.current.value,
             lastName: lastName.current.value,
             emailAddress: emailAddress.current.value,
             password: password.current.value
         }
-
+        // sends a post request to create a new user 
         try {
             const response = await api("/users", "POST", user);
             if (response.status === 201) {
